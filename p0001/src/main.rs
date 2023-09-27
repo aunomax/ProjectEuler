@@ -8,7 +8,7 @@ fn main() {
 }
 
 fn ismod3or5(n: i32) -> i32 {
-    if n%3 * n%5 == 0 {
+    if n%3 == 0 || n%5 == 0 {
         return n
     }
     return 0
