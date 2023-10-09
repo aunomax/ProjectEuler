@@ -27,8 +27,43 @@
 ///  Find the thirteen adjacent digits in the 1000-digit number that have the greatest product. What is the value of this product?
 ///
 ///
-
+use std::fs::File;
+use std::io::{self, BufRead};
+use std::path::Path;
 
 fn main() {
-    println!("Hello, world!");
+    const N: usize = 13;
+    let mut numbers = String::new();
+    if let Ok(lines) = read_lines("1000-digit.txt") {
+        for line in lines {
+            if let Ok(ip) = line {
+                numbers.push_str(&ip);
+            }
+        }
+    }
+    //let reader = BufReader<BufRead>::new(file);
+    //let digits = numbers.chars().to_digit(10)?;
+    let chars = numbers
+        .chars()
+        .map(|c| c as u64 - '0' as u64)
+        .collect::<Vec<u64>>();
+    let mut max: u64 = 0;
+    for i in 0..chars.len() - N {
+        let mut tmp: u64 = 1;
+        for j in i..i + N {
+            tmp *= chars[j];
+        }
+        if tmp > max {
+            max = tmp;
+        }
+    }
+    assert_eq!(23514624000, max);
+}
+
+fn read_lines<P>(filename: P) -> io::Result<io::Lines<io::BufReader<File>>>
+where
+    P: AsRef<Path>,
+{
+    let file = File::open(filename)?;
+    Ok(io::BufReader::new(file).lines())
 }
