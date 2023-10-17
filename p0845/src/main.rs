@@ -1,3 +1,4 @@
+use std::collections::HashMap;
 /// # Prime Digit Sum
 ///
 /// Let D(n) be the n-th positive integer that has the sum of its digits a prime.
@@ -9,7 +10,7 @@ use std::time::Instant;
 fn main() {
     let now = Instant::now();
     println!("Hello, world!");
-    println!("{}", prime_digit_sum(10_usize.pow(9)));
+    //println!("{}", prime_digit_sum(10_usize.pow(9)));
     //println!("{:?}", primes(100));
     //println!("{:?}", count_primes(100, &primes(110)));
     //assert_eq!(count_integers_nth(5), 11);
@@ -20,6 +21,52 @@ fn main() {
 
     //println!("{}", count_integers_nth(10_usize.pow(16)));
 
+    println!("{:?}", now.elapsed());
+    let primes = [
+        2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89,
+        97, 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181,
+        191, 193, 197, 199,
+    ];
+    let vv = [
+        4, 4, 5, 4, 4, 4, 3, 3, 3, 3, 4, 4, 3, 3, 3, 3, 3, 3, 2, 2, 2, 2, 3, 3, 2, 2, 2, 2, 3, 3,
+        2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 2, 2, 2, 2, 2, 2, 1, 1, 2, 2, 3, 3, 2, 2, 2, 2, 3, 3,
+        2, 2, 2, 2, 3, 3, 3, 3, 2, 2, 3, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 2, 2,
+        1, 1, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4, 3, 3, 3, 3, 3, 3, 2, 2, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1,
+        1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3,
+        2, 2, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 2, 2, 3, 3, 2, 2, 2, 2, 2, 2,
+        1, 1, 1, 1, 2, 2, 2, 2, 3,
+    ];
+    let mut count = 0;
+    let mut num: usize = 0;
+    const N: usize = 10_usize.pow(16);
+    let mut count_sum = HashMap::new();
+    while num < 10_usize.pow(9) {
+        let count = count_sum.entry(digit_sum(num)).or_insert(0);
+        *count += 1;
+        num += 10;
+    }
+    println!("{:?}", count_sum);
+    //while count <= N {
+    //    count += vv[digit_sum(num)];
+    //    num += 10;
+    //}
+    let mut flag = 0;
+    assert_eq!(count, 0);
+    num = 0;
+    while count <= N {
+        for (key, val) in count_sum.iter() {
+            count += vv[digit_sum(flag) + key] * val;
+        }
+        num += 10_usize.pow(9);
+        flag += 1;
+    }
+    while count >= N {
+        num -= 1;
+        if primes.contains(&(digit_sum(num))) {
+            count -= 1;
+        }
+    }
+    assert_eq!(num, 45009328011709400);
     println!("{:?}", now.elapsed());
 }
 
