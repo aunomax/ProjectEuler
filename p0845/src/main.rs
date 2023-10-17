@@ -4,18 +4,23 @@
 /// For example, D(61) = 157 and D(10^8) = 403539364.
 ///
 /// Find D(10^16).
+use std::time::Instant;
 
 fn main() {
+    let now = Instant::now();
     println!("Hello, world!");
-    //println!("{}", prime_digit_sum(10_usize.pow(9)));
-    assert_eq!('a' < 'b', true);
+    println!("{}", prime_digit_sum(10_usize.pow(9)));
     //println!("{:?}", primes(100));
     //println!("{:?}", count_primes(100, &primes(110)));
     //assert_eq!(count_integers_nth(5), 11);
     //assert_eq!(count_integers_nth(10_usize.pow(8)), 403539364);
     //assert_eq!(count_integers_nth(10_usize.pow(9)), 4112370371);
     //assert_eq!(count_integers_nth(10_usize.pow(10)), 42602833010);
-    println!("{}", count_integers_nth(10_usize.pow(11)));
+    //assert_eq!(count_integers_nth(10_usize.pow(11)), 438589762252);
+
+    //println!("{}", count_integers_nth(10_usize.pow(16)));
+
+    println!("{:?}", now.elapsed());
 }
 
 // get the sum of positive integers that has the sum of its digits a prime and below 10*n.
